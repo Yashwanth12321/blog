@@ -1,11 +1,12 @@
-import { useState } from 'react'
-import './App.css'
+import './App.css';
+import Home from './components/pages/Home';
+
 
 function App() {
   return (
     <>  
       <div className="root-container">
-        
+        <Home />
       </div>
     </>
   )
