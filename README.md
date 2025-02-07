@@ -1,8 +1,8 @@
 simple blog website
 
-Frontend
+# Frontend
 - [ ] ui
-Backend
+# Backend
 - [x] authentication
 - [x] routes, auth middlewares
 - [ ] editing, deleting blogs
