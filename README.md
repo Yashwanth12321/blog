@@ -25,3 +25,6 @@ simple blog website
 - [ ] openapi
 - [ ] webhooks
 - [ ] cicd
+
+## issues
+- [ ] adding certificates to backend for https ec2 connection to vercel
