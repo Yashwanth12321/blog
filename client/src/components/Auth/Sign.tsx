@@ -28,7 +28,7 @@ const Home = () => {
     const getBlogs = async () => {
         setLoading(true);
         try {
-            const response = await fetch("ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
+            const response = await fetch("http://ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

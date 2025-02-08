@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Blog } from "../../types";
-import CardBox from "../core/Card";
 import { Button } from "../ui/button";
 
 const Home = () => {
@@ -30,7 +29,7 @@ const Home = () => {
         setError(null);
 
         try {
-            const response = await fetch("ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
+            const response = await fetch("http://ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
