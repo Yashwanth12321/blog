@@ -46,6 +46,22 @@ app.get('/api/test', (req, res) => {
 });
 
 
+app.get('/api/blog/getblog/:id',authenticateUser, async (req, res) => {
+    try {
+        const blog = await Blog.findById(req.params.id); // ✅ Await the result
+
+        if (!blog) {
+            res.status(404).json({ message: "Blog not found" }); // ✅ Handle non-existent blog
+        }
+
+        res.status(200).json(blog);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Server error", error: err });
+    }
+});
+
+
 app.get('/api/blog/getblogs',authenticateUser,(req,res)=>{
     try{
         const blogs= Blog.find();

@@ -5,10 +5,10 @@ import jwt from "jsonwebtoken";
 const userRouter = express.Router();
 
 const generateAccessToken = (user: any) => {
-    return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+    return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '20d' });
 }
 const generateRefreshToken = (user: any) => {
-    return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '7d' });
+    return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '90d' });
   };
 
 userRouter.post('/register', async (req: Request, res: Response) => {

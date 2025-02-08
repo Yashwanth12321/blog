@@ -8,6 +8,7 @@ import Createblog from './components/pages/Createblog.tsx'
 import Login from './components/Auth/Login.tsx'
 import Sign from './components/Auth/Sign.tsx'
 import MyBlogs from './components/pages/MyBlogs.tsx'
+import Blog from './components/pages/Blog.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')!).render(
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Sign />} />
       <Route path="/myblogs" element={<MyBlogs />} />
+      <Route path='/blog/:id' element={<Blog />} />
 
 
     </Routes>
