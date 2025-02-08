@@ -72,11 +72,11 @@ const MyBlogs = () => {
             ) : blogs.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {blogs.map((blog: Blog) => (
-                        <CardBox key={blog._id} className="p-5 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition">
+                        <div key={blog._id} className="p-5 shadow-md rounded-lg border border-gray-200 hover:shadow-lg transition">
                             <h2 className="text-xl font-semibold text-gray-900">{blog.title}</h2>
                             <p className="text-gray-600">{blog.brief}</p>
                             <p className="text-sm text-gray-500 mt-2">{blog.content.substring(0, 100)}...</p>
-                        </CardBox>
+                        </div>
                     ))}
                 </div>
             ) : (
