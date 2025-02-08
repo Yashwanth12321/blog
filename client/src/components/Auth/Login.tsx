@@ -12,7 +12,7 @@ const Login = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch("http://localhost:5000/api/login", {
+            const response = await fetch("ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/login", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
