@@ -21,6 +21,7 @@ simple blog website
 - [ ] realtime systems, ws
 - [ ] testing
 - [ ] 12-factor principles
+- [ ] third party auth
 - [ ] openapi
 - [ ] webhooks
 - [ ] cicd
