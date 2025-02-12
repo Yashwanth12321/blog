@@ -1,97 +1,62 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { Blog } from "../../types";
+import { useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { v4 as uuidv4 } from 'uuid';
 
-const Home = () => {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const token = localStorage.getItem("token");
-    const navigate = useNavigate();
+export default function SignupPage() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
-    if (!token) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-[#2b3137]">
-                <div className="h-[70vh] w-[40vw] bg-[#24292e] flex flex-col items-center justify-center rounded-xl shadow-lg border border-[#854442] p-6">
-                    <p className="text-2xl font-semibold mb-2 text-gray-200">Session Expired</p>
-                    <h1 className="text-4xl font-bold mb-4 text-gray-200">Please login to continue</h1>
-                    <Link
-                        to="/login"
-                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
-                        Login
-                    </Link>
-                </div>
-            </div>
-        );
-    }
 
-    const getBlogs = async () => {
-        setLoading(true);
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        setMessage("");
+        const _id = uuidv4();
         try {
-            const response = await fetch("http://ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
+            const response = await fetch("http://localhost:4000/api/users/api/auth/register", {
+                method: "POST",
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
+                body: JSON.stringify({ _id, name, email, password }),
             });
-            const json = await response.json();
+            const data = await response.json();
             if (response.ok) {
-                setBlogs(json);
+                setMessage("User registered successfully!");
+                console.log("Response:", data);
             } else {
-                throw new Error(json.message);
+                setMessage(data || "Registration failed");
             }
-        } catch (err) {
-            setError("Failed to fetch blogs. Please try again.");
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            setMessage("Registration failed");
         }
     };
 
-    useEffect(() => {
-        getBlogs();
-    }, []);
-
-    if (loading) {
-        return <div className="text-center py-10 text-lg font-semibold animate-pulse">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-center text-red-500 py-10 font-semibold">{error}</div>;
-    }
-
     return (
-        <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Blogs</h1>
-                <Link
-                    to="/createblog"
-                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
-                    + New Blog
-                </Link>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogs.length > 0 ? (
-                    blogs.map((blog) => (
-                        <div
-                            key={blog._id}
-                            className="bg-white shadow-lg rounded-lg p-5 cursor-pointer hover:shadow-xl transition-transform transform hover:-translate-y-1 border border-gray-200"
-                            onClick={() => navigate(`/blog/${blog._id}`)}
-                        >
-                            <h2 className="text-xl font-semibold text-gray-900 mb-2">{blog.title}</h2>
-                            <p className="text-gray-600 mb-2">{blog.brief}</p>
-                            {blog.createdAt && (
-                                <p className="text-sm text-gray-400">{new Date(blog.createdAt).toLocaleDateString()}</p>
-                            )}
-                            <p className="text-sm font-medium text-gray-700">By {blog.authorName}</p>
+        <div className="flex justify-center items-center h-screen bg-gray-100">
+            <Card className="w-96 shadow-lg p-6">
+                <CardContent>
+                    <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
+                    {message && <p className="text-center text-red-500">{message}</p>}
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)} required />
                         </div>
-                    ))
-                ) : (
-                    <div className="col-span-full text-center text-lg font-semibold text-gray-600">
-                        No posts available
-                    </div>
-                )}
-            </div>
+                        <div>
+                            <label>Email</label>
+                            <input type="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                        </div>
+                        <div>
+                            <label>Password</label>
+                            <input type="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                        </div>
+                        <Button type="submit" className="w-full">Sign Up</Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
-};
-
-export default Home;
+}

@@ -29,7 +29,7 @@ const Home = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
+            const response = await fetch("http://localhost:4000/api/posts/api/blog/getblogs", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

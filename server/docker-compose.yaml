@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./api-gateway/.env
+    depends_on:
+      - user-service
+      - blog-service
+
+  user-service:
+    build: ./user-service
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./user-service/.env
+
+
+  blog-service:
+    build: ./blog-service
+    ports:
+      - "5001:5001"
+    env_file:
+      - ./blog-service/.env
+

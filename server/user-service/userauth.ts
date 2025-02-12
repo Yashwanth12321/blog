@@ -1,8 +1,39 @@
 import express, { Request, Response } from "express";  // Correct import for express
 import User from "./user";
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv";
+import mongoose from "mongoose";
+dotenv.config();
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const userRouter = express.Router();
+
+
+
+
+async function mongooseConnect() {
+    const mongoUrl = process.env.MONGO_DB_URL;
+    if (!mongoUrl) {
+        throw new Error('MONGO_DB_URL is not defined');
+    }
+    try {
+        await mongoose.connect(mongoUrl);
+        console.log('MongoDB connected successfully!');
+    } catch (err) {
+        console.error('Error connecting to MongoDB:', err);
+        process.exit(1);  // Exit the process if the DB connection fails
+    }
+}
+
+mongooseConnect();
+
+
+
+
+
 
 const generateAccessToken = (user: any) => {
     return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '20d' });
@@ -12,6 +43,7 @@ const generateRefreshToken = (user: any) => {
   };
 
 userRouter.post('/register', async (req: Request, res: Response) => {
+    console.log(req.body);
     const { _id,name, email, password } = req.body;
     try {
         const user = await User.findOne({ email });
@@ -20,7 +52,7 @@ userRouter.post('/register', async (req: Request, res: Response) => {
             res.status(400).send('User already exists');
         }else{
         const newUser = new User({ _id, name, email, password });
-        await newUser.save().then(() => console.log('user created successfully')).catch((err) => console.log(err));
+        await newUser.save().then(() => console.log('user created successfully')).catch((err: any) => console.log(err));
         const accessToken = generateAccessToken(newUser);
         console.log(accessToken);
         const refreshToken = generateRefreshToken(newUser);
@@ -83,5 +115,14 @@ userRouter.post('/refresh', async (req: Request, res: Response) => {
     }
 })
 
+app.use('/api/auth', userRouter);
 
-export default userRouter;
+app.listen(5000, () => {
+    console.log('Server started on port 5000');
+});
+
+
+
+
+
+

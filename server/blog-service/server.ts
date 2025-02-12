@@ -3,8 +3,6 @@ import Blog from './blog';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import userRouter from './userauth';
-import authenticateUser from './authenticateuser';
 
 dotenv.config();
 
@@ -15,7 +13,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
-app.use('/api',userRouter)
 
 
 
@@ -46,12 +43,11 @@ app.get('/api/test', (req, res) => {
 });
 
 
-app.get('/api/blog/getblog/:id',authenticateUser, async (req, res) => {
+app.get('/api/blog/getblog/:id', async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id); // ✅ Await the result
-
+        const blog = await Blog.findById(req.params.id); 
         if (!blog) {
-            res.status(404).json({ message: "Blog not found" }); // ✅ Handle non-existent blog
+            res.status(404).json({ message: "Blog not found" }); 
         }
 
         res.status(200).json(blog);
@@ -62,7 +58,7 @@ app.get('/api/blog/getblog/:id',authenticateUser, async (req, res) => {
 });
 
 
-app.get('/api/blog/getblogs',authenticateUser,(req,res)=>{
+app.get('/api/blog/getblogs',(req,res)=>{
     try{
         const blogs= Blog.find();
         const descending= blogs.sort({ createdAt: -1 });
@@ -74,7 +70,7 @@ app.get('/api/blog/getblogs',authenticateUser,(req,res)=>{
     }
 })
 
-app.get('/api/blog/userblogs',authenticateUser,(req,res)=>{
+app.get('/api/blog/userblogs',(req,res)=>{
     try{
         const userId=req.body.userId;
         console.log(userId);
@@ -93,7 +89,7 @@ app.get('/api/blog/userblogs',authenticateUser,(req,res)=>{
 })
 
 
-app.post('/api/blog/createblog',authenticateUser,(req,res)=>{
+app.post('/api/blog/createblog',(req,res)=>{
     const request = req;
     console.log(request.body)
     const data=request.body;
@@ -103,10 +99,9 @@ app.post('/api/blog/createblog',authenticateUser,(req,res)=>{
     res.status(200).send("blog created successfully");
 })
 
-app.use('/api/auth', userRouter);
 
-app.listen(5000, () => {
-    console.log('Server started on port 5000');
+app.listen(5001, () => {
+    console.log('Server started on port 5001');
 });
 
 async function createBlog(data: any) {

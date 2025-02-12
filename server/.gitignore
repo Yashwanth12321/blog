@@ -1,2 +1,11 @@
 node_modules
 .env
+api-gateway/node_modules
+blog-service/node_modules
+user-service/node_modules
+api-gateway/.env
+blog-service/.env
+user-service/.env
+api-gatway/package-lock.json
+blog-service/package-lock.json
+user-service/package-lock.json
