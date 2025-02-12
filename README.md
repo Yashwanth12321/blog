@@ -34,3 +34,6 @@ simple blog website
 - [ ] openapi
 - [ ] webhooks
 - [ ] cicd
+
+# issues
+- some routes doesnt get forwarded
