@@ -1,4 +1,8 @@
+-- microservice architecture in micro branch
+
 simple blog website
+
+-- monolithic architecture
 
 # Frontend
 - [ ] ui
