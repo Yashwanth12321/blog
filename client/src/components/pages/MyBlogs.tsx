@@ -29,7 +29,7 @@ const MyBlogs = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost:4000/api/posts/api/blog/userblogs", {
+            const response = await fetch("http://localhost/api/posts/api/blog/userblogs", {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Blog } from "../../types";
 import { Button } from "../ui/button";
+import { cn } from "@/lib/utils";
 
 const Home = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -9,6 +10,12 @@ const Home = () => {
     const [error, setError] = useState<string | null>(null);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    const name = "Anoymous";
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    };
 
     if (!token) {
         return (
@@ -29,7 +36,7 @@ const Home = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost:4000/api/posts/api/blog/getblogs", {
+            const response = await fetch("http://localhost/api/posts/api/blog/getblogs", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
@@ -60,34 +67,55 @@ const Home = () => {
     }
 
     return (
-        <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center mb-6">
+        <div className="flex flex-col items-center justify-center p-6">
+  
+
+                <div className="flex justify-between items-center w-full max-w-4xl mb-6">
                 <h1 className="text-3xl font-bold text-blue-300">Blogs</h1>
                 <Link to="/createblog" className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
                     + New Blog
                 </Link>
+                <Button onClick={handleLogout} className="bg-gray-700 hover:bg-gray-600">
+                Logout
+            </Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogs.length > 0 ? (
-                    blogs.map((blog) => (
-                        <div key={blog._id} className="p-5 shadow-md bg-green-500 hover:bg-green-600 rounded-lg border border-gray-200 hover:shadow-lg transition cursor-pointer"
-                            onClick={() => navigate(`/blog/${blog._id}`)}
-                        >
-                            <h2 className="text-xl font-semibold text-white mb-2">{blog.title}</h2>
-                            <p className="text-gray-100">{blog.brief}</p>
-                            {blog.createdAt && (
-                                <p className="text-sm text-gray-300 mt-2">{new Date(blog.createdAt).toLocaleDateString()}</p>
-                            )}
-                            <p className="text-sm font-medium text-gray-200 mt-1">By {blog.authorName}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
+            {blogs.length > 0 ? (
+                blogs.map((blog) => (
+                    <div 
+                        key={blog._id} 
+                        onClick={() => navigate(`/blog/${blog._id}`)} 
+                        className="w-full group/card border border-gray-200 rounded-2xl shadow-lg overflow-hidden cursor-pointer"
+                    >
+                        <div className="relative h-96 p-4 flex flex-col justify-between bg-gray-900 text-white">
+                            <div className="absolute inset-0 bg-black opacity-40 group-hover/card:opacity-60 transition"></div>
+    
+                            <div className="z-10">
+                                <p className="font-semibold text-lg break-words whitespace-normal">{blog.title}</p>
+                                <p className="text-sm text-gray-400 break-words whitespace-normal">3 min read</p>
+                                <br /><br />
+                                <p className="z-10 text-lg text-gray-400 break-words whitespace-normal mt-2">
+                                        {blog.brief}
+                                </p>
+                            </div>
+    
+                            <div className="z-10">
+                                <p className="text-sm text-gray-400 break-words whitespace-normal">By {blog.authorName}</p>
+                                <p className="text-sm text-gray-400 break-words whitespace-normal">{new Date(blog.createdAt!).toLocaleDateString()}</p>
+                            </div>
                         </div>
-                    ))
-                ) : (
-                    <div className="col-span-full text-center text-lg font-semibold text-gray-600">No posts available</div>
-                )}
-            </div>
+                    </div>
+                ))
+            ) : (
+                <div className="col-span-full text-center text-lg font-semibold text-gray-600">No posts available</div>
+            )}
         </div>
+    </div>
+    
     );
 };
 
 export default Home;
+
+

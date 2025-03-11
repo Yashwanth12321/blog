@@ -1,6 +1,6 @@
-import moongoose from 'mongoose';
+import mongoose from 'mongoose';
 
-const blogschema= new moongoose.Schema({
+const blogschema= new mongoose.Schema({
     _id:String,
     title:String,
     brief:String,
@@ -10,4 +10,4 @@ const blogschema= new moongoose.Schema({
     authorName:String
 })
 
-export default moongoose.model('Blog',blogschema);
+export default mongoose.model('Blog',blogschema);

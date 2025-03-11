@@ -1,15 +1,18 @@
-import express, { Request, Response } from "express";  // Correct import for express
+import express, { Request, Response } from "express"; 
 import User from "./user";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import cors from "cors";
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors());
 const userRouter = express.Router();
+app.use('/api/users', userRouter);
+
 
 
 
@@ -24,7 +27,7 @@ async function mongooseConnect() {
         console.log('MongoDB connected successfully!');
     } catch (err) {
         console.error('Error connecting to MongoDB:', err);
-        process.exit(1);  // Exit the process if the DB connection fails
+        process.exit(1); 
     }
 }
 
@@ -41,6 +44,7 @@ const generateAccessToken = (user: any) => {
 const generateRefreshToken = (user: any) => {
     return jwt.sign({ userId: user._id }, process.env.JWT_SECRET!, { expiresIn: '90d' });
   };
+
 
 userRouter.post('/register', async (req: Request, res: Response) => {
     console.log(req.body);
@@ -66,6 +70,7 @@ userRouter.post('/register', async (req: Request, res: Response) => {
 
 userRouter.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
+    console.log(email,password)
     try {
         const user = await User.findOne({ email });
         if (!user) {
@@ -115,7 +120,6 @@ userRouter.post('/refresh', async (req: Request, res: Response) => {
     }
 })
 
-app.use('/api/auth', userRouter);
 
 app.listen(5000, () => {
     console.log('Server started on port 5000');

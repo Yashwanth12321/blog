@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import {createProxyMiddleware} from "http-proxy-middleware";
 import jwt from "jsonwebtoken";
 import Redis from "ioredis";
 
@@ -11,30 +10,19 @@ app.use(express.json());
 app.use(require("cors")());
 
 const redisClient = new Redis({
-  host: "redis",
+  host: "redis", //redis 
   port: 6379
 });
+
 redisClient.on("connect", () => {
   console.log("Connected to Redis on port 6379");
 });
 
-// jwt validation
-const authenticate = (req:any, res:any, next:any) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) return res.status(403).json({ message: "Unauthorized" });
 
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
-  }
-};
 
 const customRateLimiter = (windowMs:any, maxRequests:any) => {
   return async (req:any, res:any, next:any) => {
-    const realIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress; // ✅ Get real IP
+    const realIp = req.headers["x-forwarded-for"] || req.connection.remoteAddress; // Get real IP
     const key = `rate_limit:${realIp}`;
 
     const currentRequests = await redisClient.get(key) || 0; 
@@ -50,14 +38,10 @@ const customRateLimiter = (windowMs:any, maxRequests:any) => {
   };
 };
 
-// Microservices urls
-const SERVICES = {
-  user: "http://user-service:5000",
-  blog: "http://blog-service:5001",
-};
 
-// Proxy routes
-app.use("/api/users",customRateLimiter(60 * 1000, 50), createProxyMiddleware({ target: SERVICES.user, changeOrigin: true }));
-app.use("/api/posts",customRateLimiter(60 * 1000, 100), authenticate, createProxyMiddleware({ target: SERVICES.blog, changeOrigin: true }));
+
+app.get("/", (req, res) => {
+  res.send("API Gateway running on port 4000");
+});
 
 app.listen(4000, () => console.log("API Gateway running on port 4000"));

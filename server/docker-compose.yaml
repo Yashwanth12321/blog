@@ -1,14 +1,29 @@
 version: "3.8"
 
 services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"   # Map Nginx to port 80
+    depends_on:
+      - api-gateway
+    networks:
+      - mynetwork
+
   redis:
     image: redis:latest
     container_name: redis_server
     ports:
       - "6379:6379"
+    networks:
+      - mynetwork
 
   api-gateway:
     build: ./api-gateway
+    container_name: api-gateway
     ports:
       - "4000:4000"
     env_file:
@@ -16,19 +31,29 @@ services:
     depends_on:
       - user-service
       - blog-service
+    networks:
+      - mynetwork
 
   user-service:
     build: ./user-service
+    container_name: user-service
     ports:
       - "5000:5000"
     env_file:
       - ./user-service/.env
-
+    networks:
+      - mynetwork
 
   blog-service:
     build: ./blog-service
+    container_name: blog-service
     ports:
       - "5001:5001"
     env_file:
       - ./blog-service/.env
+    networks:
+      - mynetwork
 
+networks:
+  mynetwork:
+    driver: bridge
