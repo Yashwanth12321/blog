@@ -35,7 +35,7 @@ const BlogPage = () => {
 
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost/api/posts/api/blog/getblog/${id}`, {
+                const response = await fetch(`http://localhost:8080/api/posts/api/blog/getblog/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

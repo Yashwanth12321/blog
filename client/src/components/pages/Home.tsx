@@ -36,7 +36,7 @@ const Home = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost/api/posts/api/blog/getblogs", {
+            const response = await fetch("http://localhost:8080/api/posts/api/blog/getblogs", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 
