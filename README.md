@@ -1,4 +1,10 @@
+-- microservice architecture in micro branch
+
 simple blog website
+just a glorified crud application
+implementing all major backend practices via this simple stuff
+
+-- monolithic architecture
 
 # Frontend
 - [ ] ui
@@ -7,7 +13,7 @@ simple blog website
 - [x] routes, auth middlewares
 - [ ] editing, deleting blogs
 - [x] my blogs, view all blogs, create blogs
-- [ ] implementing refreshing access token
+- [x] implementing refreshing access token
 - [ ] validation and transformation
 - [ ] caching using redis
 - [ ] Task queuing using redis
@@ -25,3 +31,6 @@ simple blog website
 - [ ] openapi
 - [ ] webhooks
 - [ ] cicd
+
+## issues
+- [ ] adding certificates to backend for https ec2 connection to vercel
