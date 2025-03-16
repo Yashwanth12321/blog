@@ -1,97 +1,101 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { Blog } from "../../types";
+import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Link } from "react-router";
 
-const Home = () => {
-    const [blogs, setBlogs] = useState<Blog[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-    const token = localStorage.getItem("token");
-    const navigate = useNavigate();
 
-    if (!token) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen bg-[#2b3137]">
-                <div className="h-[70vh] w-[40vw] bg-[#24292e] flex flex-col items-center justify-center rounded-xl shadow-lg border border-[#854442] p-6">
-                    <p className="text-2xl font-semibold mb-2 text-gray-200">Session Expired</p>
-                    <h1 className="text-4xl font-bold mb-4 text-gray-200">Please login to continue</h1>
-                    <Link
-                        to="/login"
-                        className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
-                        Login
-                    </Link>
-                </div>
-            </div>
-        );
-    }
+export default function SignupPage() {
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [message, setMessage] = useState("");
 
-    const getBlogs = async () => {
-        setLoading(true);
+
+    const handleSubmit = async (e: any) => {
+        e.preventDefault();
+        setMessage("");
+        const _id = uuidv4();
         try {
-            const response = await fetch("http://ec2-52-87-156-79.compute-1.amazonaws.com:5000/api/blog/getblogs", {
+            const response = await fetch("http://localhost:5000/api/auth/register", {
+                method: "POST",
                 headers: {
-                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 },
+                body: JSON.stringify({"_id": _id, "name": name, "email": email, "password": password }),
             });
-            const json = await response.json();
+            const data = await response.json();
             if (response.ok) {
-                setBlogs(json);
+                setMessage("User registered successfully!");
+                console.log("Response:", data);
             } else {
-                throw new Error(json.message);
+                setMessage(data || "Registration failed");
             }
-        } catch (err) {
-            setError("Failed to fetch blogs. Please try again.");
-        } finally {
-            setLoading(false);
+        } catch (error) {
+            setMessage("Registration failed");
         }
     };
 
-    useEffect(() => {
-        getBlogs();
-    }, []);
-
-    if (loading) {
-        return <div className="text-center py-10 text-lg font-semibold animate-pulse">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="text-center text-red-500 py-10 font-semibold">{error}</div>;
-    }
-
     return (
-        <div className="container mx-auto p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Blogs</h1>
-                <Link
-                    to="/createblog"
-                    className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
-                    + New Blog
-                </Link>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {blogs.length > 0 ? (
-                    blogs.map((blog) => (
-                        <div
-                            key={blog._id}
-                            className="bg-white shadow-lg rounded-lg p-5 cursor-pointer hover:shadow-xl transition-transform transform hover:-translate-y-1 border border-gray-200"
-                            onClick={() => navigate(`/blog/${blog._id}`)}
-                        >
-                            <h2 className="text-xl font-semibold text-gray-900 mb-2">{blog.title}</h2>
-                            <p className="text-gray-600 mb-2">{blog.brief}</p>
-                            {blog.createdAt && (
-                                <p className="text-sm text-gray-400">{new Date(blog.createdAt).toLocaleDateString()}</p>
-                            )}
-                            <p className="text-sm font-medium text-gray-700">By {blog.authorName}</p>
-                        </div>
-                    ))
-                ) : (
-                    <div className="col-span-full text-center text-lg font-semibold text-gray-600">
-                        No posts available
-                    </div>
-                )}
-            </div>
-        </div>
-    );
-};
+        <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-black dark:bg-black border border-white">
+          <h2 className="font-bold text-3xl text-white dark:text-neutral-200">
+            Register
+          </h2>
+          {message && <p className="text-red-500">{message}</p>}
 
-export default Home;
+     
+          <form className="my-8" onSubmit={handleSubmit}>
+            <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+              <LabelInputContainer>
+                <Label htmlFor="firstname">First name</Label>
+                <Input id="firstname" placeholder="Yashwanth" type="text" onChange={(e) => setName(e.target.value)} />
+              </LabelInputContainer>
+              <LabelInputContainer>
+                <Label htmlFor="lastname">Last name</Label>
+                <Input id="lastname" placeholder="Napa" type="text" />
+              </LabelInputContainer>
+            </div>
+            <LabelInputContainer >
+              <Label htmlFor="email">Email Address</Label>
+              <Input id="email" placeholder="noobg4888@gmail.com" type="email" onChange={(e) => setEmail(e.target.value)} />
+            </LabelInputContainer>
+            <LabelInputContainer >
+              <Label htmlFor="password">Password</Label>
+              <Input id="password" placeholder="••••••••" type="password" onChange={(e) => setPassword(e.target.value)} />
+            </LabelInputContainer>
+     
+            <button
+              className="bg-gradient-to-br relative group/btn from-black dark:from-zinc-900 dark:to-zinc-900 to-neutral-600 block dark:bg-zinc-800 w-full text-white rounded-md h-10 font-medium shadow-[0px_1px_0px_0px_#ffffff40_inset,0px_-1px_0px_0px_#ffffff40_inset] dark:shadow-[0px_1px_0px_0px_var(--zinc-800)_inset,0px_-1px_0px_0px_var(--zinc-800)_inset]"
+              type="submit"
+            >
+              Sign up &rarr;
+              <BottomGradient />
+            </button>
+            <p className="text-sm text-white dark:text-neutral-200 mt-4">
+              Already have an account? <Link to="/login" className="text-white dark:text-neutral-200 hover:underline">Login</Link>
+            </p>
+          </form>
+        </div>
+      );
+    }
+     
+    const BottomGradient = () => {
+      return (
+        <>
+          <span className="group-hover/btn:opacity-100 block transition duration-500 opacity-0 absolute h-px w-full -bottom-px inset-x-0 bg-gradient-to-r from-transparent via-cyan-500 to-transparent" />
+          <span className="group-hover/btn:opacity-100 blur-sm block transition duration-500 opacity-0 absolute h-px w-1/2 mx-auto -bottom-px inset-x-10 bg-gradient-to-r from-transparent via-indigo-500 to-transparent" />
+        </>
+      );
+    };
+     
+    const LabelInputContainer = ({
+      children,
+    }: {
+      children: React.ReactNode;
+    }) => {
+      return (
+        <div className="flex flex-col space-y-2 w-full">
+          {children}
+        </div>
+      );
+    };

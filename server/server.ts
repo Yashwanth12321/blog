@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use(cors());
-app.use('/api',userRouter)
+app.use('/api/auth', userRouter);
 
 
 
@@ -48,10 +48,10 @@ app.get('/api/test', (req, res) => {
 
 app.get('/api/blog/getblog/:id',authenticateUser, async (req, res) => {
     try {
-        const blog = await Blog.findById(req.params.id); // ✅ Await the result
+        const blog = await Blog.findById(req.params.id); 
 
         if (!blog) {
-            res.status(404).json({ message: "Blog not found" }); // ✅ Handle non-existent blog
+            res.status(404).json({ message: "Blog not found" }); 
         }
 
         res.status(200).json(blog);
@@ -103,7 +103,6 @@ app.post('/api/blog/createblog',authenticateUser,(req,res)=>{
     res.status(200).send("blog created successfully");
 })
 
-app.use('/api/auth', userRouter);
 
 app.listen(5000, () => {
     console.log('Server started on port 5000');
