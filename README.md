@@ -32,5 +32,11 @@ implementing all major backend practices via this simple stuff
 - [ ] webhooks
 - [ ] cicd
 
+# deploy
+ - [x] client deployed to aws s3
+ - [X] server deployed to aws ec2
+ - [x] github actions cicd for client part
+ - [ ] github action cicd for server part
+
 ## issues
 - [ ] adding certificates to backend for https ec2 connection to vercel
