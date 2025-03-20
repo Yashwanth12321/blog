@@ -17,7 +17,7 @@ export default function SignupPage() {
         setMessage("");
         const _id = uuidv4();
         try {
-            const response = await fetch("http://localhost:5000/api/auth/register", {
+            const response = await fetch("http://ec2-52-66-9-229.ap-south-1.compute.amazonaws.com:5000/api/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

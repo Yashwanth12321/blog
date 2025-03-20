@@ -29,7 +29,7 @@ const MyBlogs = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost:5000/api/blog/userblogs", {
+            const response = await fetch("http://ec2-52-66-9-229.ap-south-1.compute.amazonaws.com:5000/api/blog/userblogs", {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${token}`

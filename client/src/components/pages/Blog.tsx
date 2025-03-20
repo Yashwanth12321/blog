@@ -35,7 +35,7 @@ const BlogPage = () => {
 
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:5000/api/blog/getblog/${id}`, {
+                const response = await fetch(`http://ec2-52-66-9-229.ap-south-1.compute.amazonaws.com:5000/api/blog/getblog/${id}`, {
                     headers: { Authorization: `Bearer ${token}` },
                 });
 

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Blog } from "../../types";
 import { Button } from "../ui/button";
-import { cn } from "@/lib/utils";
 
 const Home = () => {
     const [blogs, setBlogs] = useState<Blog[]>([]);
@@ -10,7 +9,6 @@ const Home = () => {
     const [error, setError] = useState<string | null>(null);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
-    const name = "Anoymous";
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -36,7 +34,7 @@ const Home = () => {
         setError(null);
 
         try {
-            const response = await fetch("http://localhost:5000/api/blog/getblogs", {
+            const response = await fetch("http://ec2-52-66-9-229.ap-south-1.compute.amazonaws.com:5000/api/blog/getblogs", {
                 headers: { Authorization: `Bearer ${token}` },
             });
 

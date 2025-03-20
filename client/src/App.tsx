@@ -1,5 +1,4 @@
 import './App.css';
-import Home from './components/pages/Home';
 import Landing from './pages/Landing';
 
 
