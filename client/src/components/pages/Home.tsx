@@ -73,6 +73,9 @@ const Home = () => {
                 <Link to="/createblog" className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition shadow-md">
                     + New Blog
                 </Link>
+                <Link to= "/myblogs" className="px-6 py-2 bg-blue-500 text-white rounded-full hover:bg-black transition shadow-lg">
+                    My Blogs
+                </Link>
                 <Button onClick={handleLogout} className="bg-gray-700 hover:bg-gray-600">
                 Logout
             </Button>

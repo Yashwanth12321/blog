@@ -64,7 +64,7 @@ const Landing = () => {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-lg max-w-lg mb-6"
         >
-          <TypingAnimation>Share your perspective to the world.</TypingAnimation>
+          <TypingAnimation>Share your perspective.</TypingAnimation>
         </motion.p>
 
         <motion.div
@@ -74,7 +74,7 @@ const Landing = () => {
         >
           <Button
             onClick={() => navigate("/home")}
-            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-lg shadow-lg hover:scale-105 transition-transform"
+            className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-full shadow-lg hover:scale-105  transition-transform"
           >
             Get Started
           </Button>

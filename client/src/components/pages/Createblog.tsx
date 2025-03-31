@@ -88,7 +88,7 @@ const CreateBlog = () => {
                 />
                   <br />
                 <div className="flex justify-between mt-6">
-                    <Button type="button" onClick={() => navigate("/")} className="bg-gray-700 hover:bg-gray-600">
+                    <Button type="button" onClick={() => navigate("/home")} className="bg-gray-700 hover:bg-gray-600">
                         Cancel
                     </Button>
                     <Button type="button" onClick={handlePost} disabled={loading} className="bg-blue-500 hover:bg-blue-600">
