@@ -1,3 +1,5 @@
+// Use only http to view, if there is an extension that auto route to https it wont work
+
 -- microservice architecture in micro branch
 
 simple blog website
