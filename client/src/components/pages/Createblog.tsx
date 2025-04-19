@@ -36,7 +36,7 @@ const CreateBlog = () => {
 
     async function createBlog(title: string, content: string) {
         const token = localStorage.getItem("token");
-        const response = await fetch("http://ec2-52-66-9-229.ap-south-1.compute.amazonaws.com:5000/api/blog/createblog", {
+        const response = await fetch("http://ec2-15-206-93-14.ap-south-1.compute.amazonaws.com:5000/api/blog/createblog", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
