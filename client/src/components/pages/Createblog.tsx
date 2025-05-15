@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 import { Button } from "../ui/button";
+import TextEditor from "../ui/TextEditor";
+
 
 const CreateBlog = () => {
     const navigate = useNavigate();
@@ -62,7 +64,6 @@ const CreateBlog = () => {
         <div className="flex flex-col items-center justify-center min-h-screen bg-black text-gray-300 p-6">
             <div className="w-full max-w-3xl bg-[#1e1e1e] rounded-2xl shadow-lg border border-[#30363d] p-6 ">
                 {message && <p className="text-center text-sm mb-4 text-gray-300">{message}</p>}
-
                 <input
                     type="text"
                     placeholder="Enter title..."
@@ -79,15 +80,11 @@ const CreateBlog = () => {
                     className="w-full mt-4 text-lg bg-transparent border-none outline-none text-gray-300 placeholder-gray-500 resize-none h-[300px]"
                 />
                 <br />
-                <textarea
-                    placeholder="Start writing your blog..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    className="w-full mt-4 text-lg bg-transparent border-none outline-none text-gray-300 placeholder-gray-500 resize-none h-[300px]"
-                    style={{ minHeight: "300px" }}
-                />
+                
+                <TextEditor value={content} onChange={setContent}/>
+
                   <br />
-                <div className="flex justify-between mt-6">
+                <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 justify-between mt-6">
                     <Button type="button" onClick={() => navigate("/home")} className="bg-gray-700 hover:bg-gray-600">
                         Cancel
                     </Button>
